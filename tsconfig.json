@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es2022",
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "paths": {
+      "@lib/*": ["lib/*"],
+      "@app/controllers": ["controllers"],
+      "@app/controllers/*": ["controllers/*"],
+      "@app/services": ["services"],
+      "@app/services/*": ["services/*"],
+      "@app/db": ["db"],
+      "@app/types": ["types"],
+      "@scrapper": ["scrapper"],
+      "@scrapper/*": ["scrapper/*"]
+    },
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictPropertyInitialization": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["es2015", "ES2016", "ES2017", "ES2018", "dom"]
+  }
+}
