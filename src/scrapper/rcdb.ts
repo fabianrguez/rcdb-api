@@ -55,8 +55,6 @@ export default class Rcdb {
   }
 
   private static async _getCoastersByPage(page: number): Promise<RollerCoaster[]> {
-    console.log(`PAGE: ${page}`);
-
     const pageResponse = await axiosInstance.get(`${this.COASTERS_TYPE}&page=${page}`).catch(() => ({ data: {} }));
     const $paginated = load(pageResponse.data);
     const rows = $paginated('.stdtbl.rer tbody tr');
@@ -84,6 +82,7 @@ export default class Rcdb {
     console.log(`Coasters: ${totalCoasters} Pages: ${totalPages}`);
 
     for (let currentPage = 1; currentPage < totalPages; currentPage++) {
+      console.log(`Page ${currentPage} of ${totalPages}`);
       const coastersByPage: RollerCoaster[] = await this._getCoastersByPage(currentPage);
       this._coasters = [...this._coasters, ...coastersByPage];
     }
