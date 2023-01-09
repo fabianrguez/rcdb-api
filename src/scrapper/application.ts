@@ -1,6 +1,7 @@
 import { RollerCoasterService } from '@app/services';
 import Rcdb from '@scrapper/rcdb';
 import type { RollerCoaster } from '@app/types';
+import type { Regions } from '@scrapper/rcdb';
 
 const title = `
 ╔═══╦═══╦═══╦══╗─╔═══╗
@@ -22,11 +23,11 @@ export default class Application {
     this._rollerCoasterService = new RollerCoasterService();
   }
 
-  async start() {
-    const coasters: RollerCoaster[] = await Rcdb.scrapeCoasters();
+  async start(region: Regions) {
+    const coasters: RollerCoaster[] = await Rcdb.scrapeCoasters({ region });
 
     console.log('Saving coasters data to database');
     coasters.forEach((coaster: RollerCoaster) => this._rollerCoasterService.populateDBData(coaster));
-    console.log('🚀 Coasters data saved!');
+    console.log('🎢 Coasters data saved!');
   }
 }

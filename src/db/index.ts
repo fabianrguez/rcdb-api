@@ -18,7 +18,7 @@ export default class DataBase {
   }
 
   public pushData<T>(key: string, data: T) {
-    this._db.push(key, data, false);
+    this._db.push(key, data, true);
   }
 
   public async getData<T>(): Promise<T> {
