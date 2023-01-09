@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { DiContainer } from '@lib/core';
 import type { Route } from '@lib/types';
 import { MetadataKeys } from '@lib/types';
-import type { Express, Handler } from 'express';
+import type { Express, Handler, Response, Request } from 'express';
 import express, { Router } from 'express';
 import { Server as HttpServer } from 'http';
 
@@ -68,6 +68,13 @@ export default class Server {
 
   start() {
     this._initControllers();
+
+    this._app.get('/', (_: Request, res: Response) => {
+      res.json({
+        status: 'OK',
+        container: 'RCDB API',
+      });
+    });
 
     this._server = this._app.listen(this._port, () => {
       console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
