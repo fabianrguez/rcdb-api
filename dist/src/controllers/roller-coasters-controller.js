@@ -9,8 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const services_1 = require("../services");
-const decorators_1 = require("../lib/decorators");
+const services_1 = require("../..");
+const decorators_1 = require("@lib/decorators");
 let RollerCoastersController = class RollerCoastersController {
     _rollercoasterService;
     indexRoute(req, res) {

@@ -1,6 +1,6 @@
-import Application from '@scrapper/application';
+import Application from '@scraping/application';
 import { program } from 'commander';
-import type { Regions } from '@scrapper/rcdb';
+import type { Regions } from '@scraping/rcdb';
 
 program.option('--region <regionName>');
 

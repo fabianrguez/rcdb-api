@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "rm -rf dist && tsc && tsc-alias",
     "start:prod": "node dist/main.js",
     "start:dev": "nodemon",
-    "start:scrap": "ts-node -r tsconfig-paths/register ./src/scrapper/main.ts"
+    "start:scrap": "ts-node -r tsconfig-paths/register ./src/scraping/main.ts"
   },
   "keywords": [],
   "author": "",

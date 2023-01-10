@@ -12,18 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const decorators_1 = require("../lib/decorators");
-const db_1 = __importDefault(require("../db"));
+const decorators_1 = require("@lib/decorators");
+const db_1 = __importDefault(require("../../db"));
 let RollerCoasterService = class RollerCoasterService {
     _db;
     constructor() {
         this._db = db_1.default.getInstance();
     }
     populateDBData(data) {
-        this._db.pushData(`/coasters/${data.id}`, data);
+        // this._db.pushData<RollerCoaster>(`/coasters/${data.id}`, data);
     }
     async getAllCoasters(offset, limit) {
-        return await this._db.getData();
+        return await this._db.readDBFile('coasters');
+        //  return await this._db.getData<any>();
         // const coastersData: RollerCoaster[] = Object.values(data).map((coaster: RollerCoaster) => coaster);
     }
 };

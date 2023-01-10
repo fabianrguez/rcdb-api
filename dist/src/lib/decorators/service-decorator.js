@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("../core");
+const core_1 = require("@lib/core");
 function Service() {
     return (target) => {
         const injectionContainer = core_1.DiContainer.getInstance();

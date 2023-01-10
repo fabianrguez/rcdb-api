@@ -1,5 +1,5 @@
 import type { RollerCoaster, Stats } from '@app/types';
-import axiosInstance from '@scrapper/axiosInstance';
+import axiosInstance from '@scraping/axiosInstance';
 import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { load } from 'cheerio';
 import { Presets, SingleBar } from 'cli-progress';
