@@ -1,11 +1,3 @@
 {
-  "version": 2,
-  "name": "rcdb-api",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": "api",
-  "functions": {
-    "/": "/api/index.js"
-  },
   "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
