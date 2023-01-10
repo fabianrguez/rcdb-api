@@ -52,11 +52,8 @@ export default class DataBase {
   }
 
   private async initDB() {
-    const dbPassword: string = String(config.DB_PASSWORD);
     await mongoose
-      .connect(
-        `mongodb+srv://admin:${dbPassword}@cluster0.cpsxmru.mongodb.net/rcdb-roller-coaster?retryWrites=true&w=majority`
-      )
+      .connect(String(config.MONGODB_URI))
       .then(() => {
         console.log('⚡[database] connected to database');
         this._coasterModel = mongoose.model('coaster', CoasterSchema);
