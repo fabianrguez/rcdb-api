@@ -32,7 +32,7 @@ class Server {
     _app;
     _port;
     _server;
-    _controllers;
+    _controllers = [];
     _diContainer;
     constructor() {
         this._app = (0, express_1.default)();
@@ -53,10 +53,10 @@ class Server {
         this._controllers = controllers;
     }
     _initControllers() {
-        this._controllers?.forEach((ControllerClass) => {
+        [...this._controllers]?.forEach((ControllerClass) => {
             const basePath = Reflect.getMetadata(types_1.MetadataKeys.BASE_PATH, ControllerClass);
             const routes = Reflect.getMetadata(types_1.MetadataKeys.ROUTES, ControllerClass);
-            const injectedProperties = Reflect.getMetadata('dependencies-keys-property', ControllerClass);
+            const injectedProperties = Reflect.getMetadata('dependencies-keys-property', ControllerClass) ?? [];
             const expressRouter = (0, express_1.Router)();
             const controllerInstance = new ControllerClass();
             // TODO: Refactor this code to make property injection more clear
@@ -73,12 +73,6 @@ class Server {
     }
     start() {
         this._initControllers();
-        this._app.get('/', (_, res) => {
-            res.json({
-                status: 'OK',
-                container: 'RCDB API',
-            });
-        });
         this._server = this._app.listen(this._port, () => {
             console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
         });

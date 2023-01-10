@@ -11,7 +11,7 @@ class Application {
     constructor() {
         dotenv_1.default.config();
         this._appServer = new core_1.default();
-        this._appServer.setControllers([controllers_1.RollerCoastersController]);
+        this._appServer.setControllers([controllers_1.IndexController, controllers_1.RollerCoastersController]);
     }
     start() {
         this._appServer.start();

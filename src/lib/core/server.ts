@@ -12,7 +12,7 @@ export default class Server {
   private readonly _app: Express;
   private readonly _port: number;
   private _server: HttpServer;
-  private _controllers!: any[];
+  private _controllers: any[] = [];
   private _diContainer: DiContainer;
 
   constructor() {
@@ -39,10 +39,10 @@ export default class Server {
   }
 
   private _initControllers() {
-    this._controllers?.forEach((ControllerClass) => {
+    [...this._controllers]?.forEach((ControllerClass) => {
       const basePath: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, ControllerClass);
       const routes: Route[] = Reflect.getMetadata(MetadataKeys.ROUTES, ControllerClass);
-      const injectedProperties: any[] = Reflect.getMetadata('dependencies-keys-property', ControllerClass);
+      const injectedProperties: any[] = Reflect.getMetadata('dependencies-keys-property', ControllerClass) ?? [];
       const expressRouter = Router();
       const controllerInstance: { [handleName: string]: Handler } = new ControllerClass();
 
@@ -68,13 +68,6 @@ export default class Server {
 
   start() {
     this._initControllers();
-
-    this._app.get('/', (_: Request, res: Response) => {
-      res.json({
-        status: 'OK',
-        container: 'RCDB API',
-      });
-    });
 
     this._server = this._app.listen(this._port, () => {
       console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);

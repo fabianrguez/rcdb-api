@@ -6,7 +6,7 @@ import type { Request, Response } from 'express';
 export default class RollerCoastersController {
   @Inject() private _rollercoasterService: RollerCoasterService;
 
-  @Get('')
+  @Get()
   public indexRoute(req: Request, res: Response) {
     const { offset = '0', limit = Infinity } = req.query;
 

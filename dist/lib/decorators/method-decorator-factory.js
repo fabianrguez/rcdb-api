@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = require("../types");
 function methodDecoratorFactory(method) {
-    return (path) => {
+    return (path = '') => {
         return (target, propertyKey) => {
             const controllerClass = target.constructor;
             const routers = Reflect.hasMetadata(types_1.MetadataKeys.ROUTES, controllerClass)
