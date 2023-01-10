@@ -19,13 +19,9 @@ let RollerCoasterService = class RollerCoasterService {
     constructor() {
         this._db = db_1.default.getInstance();
     }
-    populateDBData(data) {
-        // this._db.pushData<RollerCoaster>(`/coasters/${data.id}`, data);
-    }
     async getAllCoasters(offset, limit) {
-        return await this._db.readDBFile('coasters');
-        //  return await this._db.getData<any>();
-        // const coastersData: RollerCoaster[] = Object.values(data).map((coaster: RollerCoaster) => coaster);
+        const coasters = await this._db.readDBFile('coasters');
+        return coasters.splice(offset, limit);
     }
 };
 RollerCoasterService = __decorate([
