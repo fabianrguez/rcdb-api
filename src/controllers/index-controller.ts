@@ -7,7 +7,7 @@ export default class IndexController {
   public indexRoute(_: Request, res: Response) {
     res.json([
       { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },
-      { endpoint: '/test' },
+      { endpoint: '/test-vercel-action-deploy' },
     ]);
   }
 }
