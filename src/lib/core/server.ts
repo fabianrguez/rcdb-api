@@ -76,10 +76,6 @@ export default class Server {
       });
     });
 
-    this._app.get('/api/coasters', (_: Request, res: Response) => {
-      res.json(['all coasters data']);
-    });
-
     this._server = this._app.listen(this._port, () => {
       console.log(`⚡[server]: Server is running at http://localhost:${this._port}`);
     });
