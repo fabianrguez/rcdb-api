@@ -23,9 +23,8 @@ let RollerCoasterService = class RollerCoasterService {
         this._db.pushData(`/coasters/${data.id}`, data);
     }
     async getAllCoasters(offset, limit) {
-        const data = await this._db.getData();
+        return await this._db.getData();
         // const coastersData: RollerCoaster[] = Object.values(data).map((coaster: RollerCoaster) => coaster);
-        return data;
     }
 };
 RollerCoasterService = __decorate([
