@@ -4,7 +4,7 @@ import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { load } from 'cheerio';
 import { Presets, SingleBar } from 'cli-progress';
 
-export type Regions = 'Madrid' | 'Europe' | 'Spain';
+export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
 
 const camelize = (str: string) =>
   str
@@ -15,15 +15,10 @@ const REGION_COASTERS_MAPPER: { [key: string]: string } = {
   Madrid: 'ol=25959&ot=2',
   Europe: 'ol=25852&ot=2',
   Spain: 'ol=25940&ot=2',
+  World: 'ot=2',
 };
 
 export default class Rcdb {
-  /**
-   * Only that contains gotham: nc=Gotham&ot=2
-   * Only spain roller coasters: ol=25940&ot=2
-   * Only Europe roller coasters: ol=25852&ot=2
-   * Only Madrid roller coasters: ol=25959&ot=2
-   */
   private static _coastersUrl: string = '/r.htm?';
   private static readonly COASTERS_PER_PAGE: number = 24;
   private static _coasters: RollerCoaster[] = [];
@@ -118,7 +113,10 @@ export default class Rcdb {
   }
 
   static async scrapeCoasters({ region }: { region: Regions }) {
+    const start = performance.now();
+
     this._coastersUrl += REGION_COASTERS_MAPPER[region];
+
     const axiosResponse = await axiosInstance.get(this._coastersUrl);
     const { totalCoasters, totalPages } = this._getPagination(axiosResponse.data);
     console.log(`Scrapping ${region} coasters 🎢`);
@@ -131,6 +129,11 @@ export default class Rcdb {
       const coastersByPage: RollerCoaster[] = await this._getCoastersByPage(currentPage);
       this._coasters = [...this._coasters, ...coastersByPage];
     }
+
+    const end = performance.now();
+    const time = (end - start) / 1000;
+
+    console.log(`Coasters scraped in ${time} seconds`);
 
     this._progressBar.stop();
 
