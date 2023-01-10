@@ -2,7 +2,7 @@
   "version": 2,
   "name": "rcdb-api",
   "buildCommand": "npm run build",
-  "installComamand": "npm install",
+  "installCommand": "npm install",
   "outputDirectory": "api",
   "builds": [
     { "src": "api/index.js", "use": "@vercel/node" }
