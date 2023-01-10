@@ -1,0 +1,26 @@
+name: Scrape RCDB Roller Coasters
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types:
+      - webhook
+
+  schedule:
+    - cron: '0 */1 * * 0'
+    - cron: '0 12 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: npm/action-setup@v2
+        with:
+          version: 7.18.2
+          run_install: true
+      - run: |
+          npm run scrape
