@@ -5,6 +5,9 @@ import type { Request, Response } from 'express';
 export default class IndexController {
   @Get()
   public indexRoute(_: Request, res: Response) {
-    res.json([{ endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' }]);
+    res.json([
+      { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },
+      { endpoint: '/test' },
+    ]);
   }
 }
