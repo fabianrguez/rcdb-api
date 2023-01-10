@@ -6,14 +6,14 @@ export interface Stats {
   duration?: string;
   arrangement?: string;
   capacity?: string;
-  dimensions?: string;
+  dimensions?: any[] | string;
   designer?: string;
   verticalAngle?: string;
   gForce?: string;
   drop?: string;
   cost?: string;
   builtBy?: string;
-  elements?: string;
+  elements?: string[] | string;
   formerNames?: string;
 }
 

@@ -1,7 +1,7 @@
 import { RollerCoasterService } from '@app/services';
-import Rcdb from '@scrapper/rcdb';
 import type { RollerCoaster } from '@app/types';
 import type { Regions } from '@scrapper/rcdb';
+import Rcdb from '@scrapper/rcdb';
 
 const title = `
 ╔═══╦═══╦═══╦══╗─╔═══╗

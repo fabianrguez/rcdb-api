@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axiosInstance_1 = __importDefault(require("./axiosInstance"));
 const cheerio_1 = require("cheerio");
 const cli_progress_1 = require("cli-progress");
-const waaait = async (timeMs) => new Promise((resolve) => setTimeout(resolve, timeMs));
 const camelize = (str) => str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase()))
     .replace(/\s+/g, '');
@@ -95,7 +94,6 @@ class Rcdb {
                 this._progressBar.increment();
                 const rollerCoaster = await this._getCoasterDetails(link);
                 coastersPage = [...coastersPage, rollerCoaster];
-                await waaait(300);
             }
         }
         return coastersPage;

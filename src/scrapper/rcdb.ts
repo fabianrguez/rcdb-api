@@ -6,8 +6,6 @@ import { Presets, SingleBar } from 'cli-progress';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain';
 
-const waaait = async (timeMs: number) => new Promise((resolve) => setTimeout(resolve, timeMs));
-
 const camelize = (str: string) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase()))
@@ -113,8 +111,6 @@ export default class Rcdb {
         const rollerCoaster: RollerCoaster = await this._getCoasterDetails(link);
 
         coastersPage = [...coastersPage, rollerCoaster];
-
-        await waaait(300);
       }
     }
 

@@ -24,8 +24,8 @@ let RollerCoasterService = class RollerCoasterService {
     }
     async getAllCoasters(offset, limit) {
         const data = await this._db.getData();
-        const coastersData = Object.values(data.coasters).map((coaster) => coaster);
-        return coastersData.slice(offset, limit);
+        // const coastersData: RollerCoaster[] = Object.values(data).map((coaster: RollerCoaster) => coaster);
+        return data;
     }
 };
 RollerCoasterService = __decorate([

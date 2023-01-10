@@ -15,9 +15,10 @@ export default class RollerCoasterService {
   }
 
   public async getAllCoasters(offset: number, limit: number): Promise<RollerCoaster[]> {
-    const data: AllCoastersDB = await this._db.getData<AllCoastersDB>();
-    const coastersData: RollerCoaster[] = Object.values(data.coasters).map((coaster: RollerCoaster) => coaster);
+    const data: any[] = await this._db.getData<any>();
 
-    return coastersData.slice(offset, limit);
+    // const coastersData: RollerCoaster[] = Object.values(data).map((coaster: RollerCoaster) => coaster);
+
+    return data;
   }
 }

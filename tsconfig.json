@@ -13,7 +13,8 @@
       "@app/db": ["db"],
       "@app/types": ["types"],
       "@scrapper": ["scrapper"],
-      "@scrapper/*": ["scrapper/*"]
+      "@scrapper/*": ["scrapper/*"],
+      "@config": ["config"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
