@@ -20,5 +20,3 @@ class Application {
 const application = new Application();
 
 application.start();
-
-export default application._appServer.app;
