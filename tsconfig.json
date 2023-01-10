@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./api",
+    "outDir": "dist",
     "target": "es2022",
     "module": "commonjs",
     "baseUrl": "./src",
