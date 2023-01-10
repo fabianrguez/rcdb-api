@@ -46,9 +46,9 @@ exports.CoasterSchema = new mongoose_1.Schema({
     type: String,
     design: String,
     stats: {
-        length: String,
-        height: String,
-        speed: String,
+        length: Array || String,
+        height: Array || String,
+        speed: Array || String,
         inversions: String,
         duration: String,
         arrangement: String,
@@ -91,7 +91,7 @@ class DataBase {
     }
     async pushData(key, data) {
         const _data = new this._coasterModel(data);
-        await _data.save();
+        await _data.save().catch(() => console.error(`Error saving coaster with id => ${key}`));
         // this._db.push(key, data, true);
     }
     async getData() {

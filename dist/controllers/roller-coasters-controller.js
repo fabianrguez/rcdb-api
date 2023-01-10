@@ -15,11 +15,10 @@ let RollerCoastersController = class RollerCoastersController {
     _rollercoasterService;
     indexRoute(req, res) {
         const { offset = '0', limit = Infinity } = req.query;
-        res.status(200).json(['roller coasters']);
-        // this._rollercoasterService
-        //   .getAllCoasters(Number(offset), Number(limit))
-        //   .then((coasters) => res.status(200).json({ data: coasters, totalItems: coasters.length }))
-        //   .catch((e: Error) => res.status(400).json({ error: e }));
+        this._rollercoasterService
+            .getAllCoasters(Number(offset), Number(limit))
+            .then((coasters) => res.status(200).json({ data: coasters, totalItems: coasters.length }))
+            .catch((e) => res.status(400).json({ error: e }));
     }
 };
 __decorate([
