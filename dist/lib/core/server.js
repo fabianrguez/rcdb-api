@@ -24,8 +24,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-const core_1 = require("@lib/core");
-const types_1 = require("@lib/types");
+const core_1 = require("../core");
+const types_1 = require("../types");
 const express_1 = __importStar(require("express"));
 const DEFAULT_SERVER_PORT = 8000;
 class Server {

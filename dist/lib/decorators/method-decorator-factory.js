@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const types_1 = require("@lib/types");
+const types_1 = require("../types");
 function methodDecoratorFactory(method) {
     return (path) => {
         return (target, propertyKey) => {

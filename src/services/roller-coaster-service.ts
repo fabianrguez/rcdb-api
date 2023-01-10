@@ -1,7 +1,6 @@
-import { Service } from '@lib/decorators';
-import DataBase from '@app/db';
-import type { AllCoastersDB, RollerCoaster } from '@app/types';
 import JsonDB from '@app/db';
+import type { RollerCoaster } from '@app/types';
+import { Service } from '@lib/decorators';
 
 @Service()
 export default class RollerCoasterService {

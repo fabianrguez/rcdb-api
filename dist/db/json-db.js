@@ -7,7 +7,7 @@ const promises_1 = require("fs/promises");
 const path_1 = __importDefault(require("path"));
 class JsonDB {
     static _instance;
-    __DB_PATH__ = path_1.default.join(process.cwd(), './db');
+    __DB_PATH__ = path_1.default.join(process.cwd(), './src/db');
     constructor() { }
     static getInstance() {
         if (!this._instance) {

@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const rcdb_1 = __importDefault(require("@scraping/rcdb"));
-const db_1 = __importDefault(require("../../db"));
+const rcdb_1 = __importDefault(require("./rcdb"));
+const db_1 = __importDefault(require("../db"));
 const title = `
 ╔═══╦═══╦═══╦══╗─╔═══╗
 ║╔═╗║╔═╗╠╗╔╗║╔╗║─║╔═╗║

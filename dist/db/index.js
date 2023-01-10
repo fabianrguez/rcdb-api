@@ -1,5 +1,5 @@
 "use strict";
-// import config from '..';
+// import config from '../config';
 // import mongoose, { Schema } from 'mongoose';
 // import { JsonDB } from 'node-json-db';
 var __importDefault = (this && this.__importDefault) || function (mod) {

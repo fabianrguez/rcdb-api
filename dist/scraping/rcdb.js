@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axiosInstance_1 = __importDefault(require("@scraping/axiosInstance"));
+const axiosInstance_1 = __importDefault(require("./axiosInstance"));
 const cheerio_1 = require("cheerio");
 const cli_progress_1 = require("cli-progress");
 const camelize = (str) => str

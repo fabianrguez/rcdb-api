@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@lib/core");
+const core_1 = require("../core");
 function RestController(basePath) {
     return (target) => {
         console.log('rest controller decorator');

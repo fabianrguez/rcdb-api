@@ -12,8 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const decorators_1 = require("@lib/decorators");
-const db_1 = __importDefault(require("../../db"));
+const db_1 = __importDefault(require("../db"));
+const decorators_1 = require("../lib/decorators");
 let RollerCoasterService = class RollerCoasterService {
     _db;
     constructor() {
