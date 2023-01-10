@@ -17,4 +17,8 @@ class Application {
   }
 }
 
-new Application().start();
+const application = new Application();
+
+application.start();
+
+export default application._appServer.app;
