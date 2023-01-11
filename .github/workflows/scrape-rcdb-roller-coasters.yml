@@ -7,8 +7,9 @@ on:
       - webhook
 
   schedule:
-    - cron: '0 */1 * * 0'
-    - cron: '0 12 * * *'
+    - cron: '*/10 * * * *'
+    # - cron: '0 */1 * * 0'
+    # - cron: '0 12 * * *'
 
 jobs:
   build:
@@ -18,12 +19,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - uses: npm/action-setup@v2
-        with:
-          version: 7.18.2
-          run_install: true
       - run: |
+          npm run install
           npm run scrape
-          git config user.name kings-league-bot
+          git config user.name rcdb-api-bot
           git diff --quiet && git diff --staged --quiet || git commit -am "[bot] update RCDB Roller Coasters database"
           git push origin main
