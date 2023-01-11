@@ -7,7 +7,7 @@ on:
       - webhook
 
   schedule:
-    - cron: '35 * * * *'
+    - cron: '50 * * * *'
     # - cron: '0 */1 * * 0'
     # - cron: '0 12 * * *'
 
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 18
       - run: |
-          npm run install
+          npm install
           npm run scrape
           git config user.name rcdb-api-bot
           git diff --quiet && git diff --staged --quiet || git commit -am "[bot] update RCDB Roller Coasters database"
