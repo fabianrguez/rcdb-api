@@ -7,7 +7,7 @@ on:
       - webhook
 
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '35 * * * *'
     # - cron: '0 */1 * * 0'
     # - cron: '0 12 * * *'
 
