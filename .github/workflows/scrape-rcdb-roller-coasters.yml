@@ -1,8 +1,6 @@
 name: Scrape RCDB Roller Coasters
 on:
   workflow_dispatch:
-  env:
-    RCDB_URL: ${{ vars.RCDB_URL }}
 
   repository_dispatch:
     types:
@@ -11,7 +9,8 @@ on:
   schedule:
     - cron: '0 */1 * * 0'
     - cron: '0 12 * * *'
-
+env:
+  RCDB_URL: ${{ vars.RCDB_URL }}
 jobs:
   scrape-coasters:
     runs-on: ubuntu-22.04
