@@ -3,10 +3,18 @@ import type { Request, Response } from 'express';
 
 @Controller()
 export default class IndexController {
+  private _endpoints: any[] = [
+    { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },
+    { endpoint: '/api/coasters/:id', description: 'Returns coaster with matched id' },
+  ];
+
   @Get()
   public indexRoute(_: Request, res: Response) {
-    res.json([
-      { endpoint: '/api/coasters?offset=0&limit=20', description: 'Returns all coasters information' },
-    ]);
+    res.json(this._endpoints);
+  }
+
+  @Get('api')
+  public apiRoute(_: Request, res: Response) {
+    res.json(this._endpoints);
   }
 }
