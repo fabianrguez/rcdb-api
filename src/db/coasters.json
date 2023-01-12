@@ -63854,8 +63854,8 @@
     "country": "England",
     "link": "/779.htm",
     "status": {
-      "state": "SBNOOperated",
-      "date": "2020"
+      "state": "OperatedSBNOOperated",
+      "date": "1991-07-17"
     },
     "make": "",
     "model": "",
@@ -63877,6 +63877,7 @@
       ],
       "arrangement": "2 trains with 10 cars per train. Riders are arranged 2 across in 2 rows for a total of 40 riders per train.",
       "formerStatus": [
+        "SBNO",
         "Operated"
       ],
       "designer": "Robert StaveleyBig Country Motioneering"
