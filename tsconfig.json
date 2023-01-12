@@ -11,6 +11,8 @@
       "@app/controllers/*": ["controllers/*"],
       "@app/services": ["services"],
       "@app/services/*": ["services/*"],
+      "@app/models": ["models"],
+      "@app/models/*": ["models/*"],
       "@app/db": ["db"],
       "@app/types": ["types"],
       "@scraping": ["scraping"],

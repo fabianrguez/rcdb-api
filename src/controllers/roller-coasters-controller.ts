@@ -8,11 +8,24 @@ export default class RollerCoastersController {
 
   @Get()
   public indexRoute(req: Request, res: Response) {
-    const { offset = '0', limit = Infinity } = req.query;
+    const { offset = '0', limit = '4000' } = req.query;
 
     this._rollercoasterService
-      .getAllCoasters(Number(offset), Number(limit))
-      .then((coasters) => res.status(200).json({ data: coasters, totalItems: coasters.length }))
+      .getPaginatedCoasters(Number(offset), Number(limit))
+      .then((coasters) => res.status(200).json(coasters))
       .catch((e: Error) => res.status(400).json({ error: e }));
+  }
+
+  @Get('/:id')
+  public async getByIdRoute(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const coaster = await this._rollercoasterService.getCoasterById(Number(id));
+
+    if (coaster) {
+      res.status(200).json(coaster);
+    } else {
+      res.status(404).json({ message: `Coaster ${id} not found` });
+    }
   }
 }
