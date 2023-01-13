@@ -1,7 +1,6 @@
 import { RollerCoasterService } from '@app/services';
 import { Controller, Get, Inject } from '@lib/decorators';
 import type { Request, Response } from 'express';
-import { get } from 'http';
 import RollerCoaster from 'types/roller-coaster';
 
 @Controller('/api/coasters')
