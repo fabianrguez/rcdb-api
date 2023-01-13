@@ -2,6 +2,7 @@ import JsonDB from '@app/db';
 import type { RollerCoaster } from '@app/types';
 import { PaginatedResponse } from '@app/models';
 import { Service } from '@lib/decorators';
+import { getRandom } from '@app/utils';
 
 @Service()
 export default class RollerCoasterService {
@@ -27,5 +28,12 @@ export default class RollerCoasterService {
     const coasters: RollerCoaster[] = await this.getCoastersDB();
 
     return coasters.find(({ id: coasterId }: RollerCoaster) => coasterId === id);
+  }
+
+  public async getRandomCoaster(): Promise<RollerCoaster> {
+    const coasters: RollerCoaster[] = await this.getCoastersDB();
+    const randomIndex: number = getRandom(0, coasters.length);
+
+    return coasters[randomIndex];
   }
 }

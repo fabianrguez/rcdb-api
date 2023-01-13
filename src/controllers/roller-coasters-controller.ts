@@ -1,6 +1,8 @@
 import { RollerCoasterService } from '@app/services';
 import { Controller, Get, Inject } from '@lib/decorators';
 import type { Request, Response } from 'express';
+import { get } from 'http';
+import RollerCoaster from 'types/roller-coaster';
 
 @Controller('/api/coasters')
 export default class RollerCoastersController {
@@ -16,7 +18,7 @@ export default class RollerCoastersController {
       .catch((e: Error) => res.status(400).json({ error: e }));
   }
 
-  @Get('/:id')
+  @Get('/:id([0-9]+)')
   public async getByIdRoute(req: Request, res: Response) {
     const { id } = req.params;
 
@@ -26,6 +28,16 @@ export default class RollerCoastersController {
       res.status(200).json(coaster);
     } else {
       res.status(404).json({ message: `Coaster ${id} not found` });
+    }
+  }
+
+  @Get('/random')
+  public async getRandomCoasterRoute(req: Request, res: Response) {
+    try {
+      const randomCoaster: RollerCoaster = await this._rollercoasterService.getRandomCoaster();
+      res.status(200).json(randomCoaster);
+    } catch (e: any) {
+      res.status(400).json({ message: 'Error getting a random coaster', cause: e });
     }
   }
 }

@@ -13,6 +13,8 @@
       "@app/services/*": ["services/*"],
       "@app/models": ["models"],
       "@app/models/*": ["models/*"],
+      "@app/utils": ["utils"],
+      "@app/utils/*": ["utils/*"],
       "@app/db": ["db"],
       "@app/types": ["types"],
       "@scraping": ["scraping"],
