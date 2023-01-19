@@ -18,6 +18,7 @@ export default class Server {
   constructor() {
     this._app = express();
     this._app.use(express.json());
+    this._app.use(express.static('static'));
     this._port = Number(process.env.PORT) ?? DEFAULT_SERVER_PORT;
     this._diContainer = DiContainer.getInstance();
   }

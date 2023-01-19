@@ -1,3 +1,5 @@
+import type { Picture } from '@app/types';
+
 export interface Stats {
   length?: string;
   height?: string;
@@ -34,4 +36,6 @@ export default interface RollerCoaster {
   type: string;
   design: string;
   stats?: Stats;
+  mainPicture: Picture | undefined;
+  pictures: Picture[];
 }

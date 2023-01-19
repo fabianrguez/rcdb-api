@@ -1,12 +1,12 @@
+import { __COASTERS_DB_FILENAME__ } from '@app/constants';
 import JsonDB from '@app/db';
-import type { RollerCoaster } from '@app/types';
 import { PaginatedResponse } from '@app/models';
-import { Service } from '@lib/decorators';
+import type { RollerCoaster } from '@app/types';
 import { getRandom } from '@app/utils';
+import { Service } from '@lib/decorators';
 
 @Service()
 export default class RollerCoasterService {
-  private readonly __COASTER_DB_FILE__: string = 'coasters';
   private _db: JsonDB;
 
   constructor() {
@@ -14,7 +14,7 @@ export default class RollerCoasterService {
   }
 
   private async getCoastersDB(): Promise<RollerCoaster[]> {
-    return await this._db.readDBFile<RollerCoaster[]>(this.__COASTER_DB_FILE__);
+    return await this._db.readDBFile<RollerCoaster[]>(__COASTERS_DB_FILENAME__);
   }
 
   public async getPaginatedCoasters(offset: number, limit: number): Promise<PaginatedResponse<RollerCoaster>> {
