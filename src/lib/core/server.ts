@@ -2,9 +2,10 @@ import 'reflect-metadata';
 import { DiContainer } from '@lib/core';
 import type { Route } from '@lib/types';
 import { MetadataKeys } from '@lib/types';
-import type { Express, Handler, Response, Request } from 'express';
+import type { Express, Handler } from 'express';
 import express, { Router } from 'express';
 import { Server as HttpServer } from 'http';
+import cors from 'cors';
 
 const DEFAULT_SERVER_PORT = 8000;
 
@@ -19,6 +20,7 @@ export default class Server {
     this._app = express();
     this._app.use(express.json());
     this._app.use(express.static('static'));
+    this._app.use(cors());
     this._port = Number(process.env.PORT) ?? DEFAULT_SERVER_PORT;
     this._diContainer = DiContainer.getInstance();
   }
