@@ -9,7 +9,7 @@ export default class RollerCoastersController {
 
   @Get()
   public indexRoute(req: Request, res: Response) {
-    const { offset = '0', limit = '4000' } = req.query;
+    const { offset = '0', limit = '1000' } = req.query;
 
     this._rollercoasterService
       .getPaginatedCoasters(Number(offset), Number(limit))
@@ -38,5 +38,16 @@ export default class RollerCoastersController {
     } catch (e: any) {
       res.status(400).json({ message: 'Error getting a random coaster', cause: e });
     }
+  }
+
+  @Get('/search')
+  public async searchCoasterRoute(req: Request, res: Response) {
+    const { q = '' } = req.query;
+
+    if (!q) res.status(400).json([]);
+
+    const matchedCoasters: RollerCoaster[] = await this._rollercoasterService.searchCoasters(q as string);
+
+    res.status(200).json({ coasters: matchedCoasters, totalMatch: matchedCoasters.length });
   }
 }
