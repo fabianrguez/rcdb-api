@@ -40,8 +40,6 @@ export default class RollerCoasterService {
   public async searchCoasters(searchTerm: string): Promise<RollerCoaster[]> {
     const coasters: RollerCoaster[] = await this._getCoastersDB();
 
-    console.log({ searchTerm });
-
     return coasters.filter(
       ({ name, parkName }: RollerCoaster) =>
         parkName?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
