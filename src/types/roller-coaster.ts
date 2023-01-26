@@ -25,6 +25,7 @@ export default interface RollerCoaster {
   parkName: string;
   city: string;
   state: string;
+  region: string;
   status: {
     state: string;
     date: string;

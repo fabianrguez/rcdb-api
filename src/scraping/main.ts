@@ -7,7 +7,7 @@ program.option('--saveData <boolean>');
 
 program.parse();
 
-const { region = 'Europe', saveData = 'true' } = program.opts<{ region: Regions; saveData: string }>();
+const { region = 'World', saveData = 'true' } = program.opts<{ region: Regions; saveData: string }>();
 
 const app = new Application();
 
