@@ -66,40 +66,13 @@ export default class Application {
     });
   }
 
-  private _mapCoasterImagesToStaticPath(coasters: RollerCoaster[]): RollerCoaster[] {
-    const getStaticPath = (photoId: number, coasterId: number) => `/images/coasters/${coasterId}/${photoId}.webp`;
-
-    return coasters.map((coaster: RollerCoaster) => {
-      const mainPicture: Picture = coaster.mainPicture
-        ? { ...coaster.mainPicture, url: getStaticPath(coaster.mainPicture.id, coaster.id) }
-        : ({} as Picture);
-
-      const coasterPhotos: Picture[] =
-        coaster?.pictures.map((picture: Picture) => ({ ...picture, url: getStaticPath(picture.id, coaster.id) })) ?? [];
-
-      return {
-        ...coaster,
-        mainPicture,
-        pictures: coasterPhotos,
-      };
-    });
-  }
-
-  private async _savePhotosByCoaster(photosByCoaster: { [coasterId: string]: Picture[] }): Promise<void> {
-    console.log('💾 saving photos by coaster to db file');
-
-    return await this._jsonDb.writeDBFile(__PHOTOS_BY_COASTER_DB_FILENAME__, photosByCoaster);
-  }
-
   async start({ region, saveData }: { region: Regions; saveData: boolean }) {
     const coasters: RollerCoaster[] = await this._rcdbScraper.scrapeCoasters({ region });
 
-    await this._savePhotosByCoaster(this._rcdbScraper.photosByCoaster);
     await this._saveRawRollerCoasters(coasters);
 
     if (saveData) {
-      const coastersMapped: RollerCoaster[] = this._mapCoasterImagesToStaticPath(coasters);
-      await this._saveRollerCoasters(coastersMapped);
+      await this._saveRollerCoasters(coasters);
     }
   }
 }

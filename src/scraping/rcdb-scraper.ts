@@ -99,7 +99,7 @@ export default class RcdbScraper {
       const coasterDetailResponse = await axiosInstance.get(link);
       const $: CheerioAPI = load(coasterDetailResponse.data);
 
-      const stateDate: Cheerio<any> = $('time[datetime]');
+      const stateDate: Cheerio<any> = $('#feature time[datetime]');
       const coasterStats: Stats = this._getCoasterStats($);
       const coasterPhotos: Picture[] = this._getPhotos($);
       const mainPictureId: number = Number($('#demo [aria-label=Picture]').prop('data-id'));
@@ -113,6 +113,7 @@ export default class RcdbScraper {
         city: $('#feature > div > a:nth-of-type(2)').text(),
         state: $('#feature > div > a:nth-of-type(3)').text(),
         country: $('#feature > div > a:nth-of-type(4)').text(),
+        region: $('#feature > div > a:last-of-type').text(),
         link: link,
         status: {
           state: stateDate.prev().text(),
@@ -182,78 +183,5 @@ export default class RcdbScraper {
     console.log(`Coasters scraped in ${time} minutes`);
 
     return this._coasters;
-  }
-
-  public async processCoasterPhotos(
-    photosByCoaster: { [coasterId: string | number]: Picture[] } = this._photosByCoaster
-  ) {
-    console.log('processing coaster images...');
-    // const photosByCoasterEntry = Object.entries(photosByCoaster);
-    let processedPhotosByCoaster = {};
-
-    for (const coasterPhotosEntry of Object.entries(photosByCoaster)) {
-      const [coasterId, photos]: [string, Picture[]] = coasterPhotosEntry;
-      console.log(`Coaster ${coasterId}`);
-
-      const processedPhotos = await Promise.allSettled(
-        photos.map(async (photo: Picture) => {
-          console.log(`process photo ${photo.url}`);
-          
-          const { data: pictureBuffer } = await axiosInstance(photo.url, { responseType: 'arraybuffer' }).catch(() => {
-            console.log(`💥 Error getting photo ${photo.url}`);
-
-            return {
-              data: null,
-            };
-          });
-
-          return { ...photo, pictureBuffer };
-        })
-      );
-
-      // for (const photo of photos) {
-      //   console.log(`processing photo ${photo.url} of coaster ${coasterId}`);
-
-      //   const { data: pictureBuffer } = await axiosInstance(photo.url, { responseType: 'arraybuffer' }).catch(() => {
-      //     console.log(`💥 Error getting photo ${photo.url}`);
-
-      //     return {
-      //       data: null,
-      //     };
-      //   });
-
-      //   processedPhotos.push(pictureBuffer);
-      // }
-
-      processedPhotosByCoaster = {
-        ...processedPhotosByCoaster,
-        [coasterId]: processedPhotos,
-      };
-    }
-
-    return processedPhotosByCoaster;
-
-    // return await Promise.allSettled(
-    //   photosByCoasterEntry.map(async ([coasterId, photos]: [string, Picture[]]) => {
-    //     const processedCoasterPhotos = await Promise.allSettled(
-    //       photos.map(async (photo: Picture) => {
-    //         try {
-    //           console.log(`picture ${photo.url}`);
-
-    //           const { data: pictureBuffer } = await axiosInstance(photo.url, { responseType: 'arraybuffer' });
-
-    //           return { ...photo, pictureBuffer };
-    //         } catch (e: any) {
-    //           console.log(`💥 Error fetching image for ${photo.url}`);
-    //           return { ...photo, pictureBuffer: null };
-    //         }
-    //       })
-    //     );
-
-    //     return {
-    //       [coasterId]: processedCoasterPhotos,
-    //     };
-    //   })
-    // );
   }
 }

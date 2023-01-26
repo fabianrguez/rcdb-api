@@ -21,7 +21,7 @@ jobs:
           node-version: 18
       - run: |
           npm install
-          npm run scrape -- --region World
+          npm run scrape
           git config user.name rcdb-api-bot
           git diff --quiet && git diff --staged --quiet || git commit -am "[bot] update RCDB Roller Coasters database"
           git push origin main
