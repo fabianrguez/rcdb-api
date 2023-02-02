@@ -108,8 +108,6 @@ export default class RcdbScraper {
       const placeIndex = splitMapLink.indexOf('place');
       const coords = splitMapLink[placeIndex + 1];
 
-      console.log({ lat: coords.split(',')[0], lng: coords.split(',')[1] });
-
       this._photosByCoaster = { ...this._photosByCoaster, [getCoasterId(link)]: coasterPhotos };
 
       return {
