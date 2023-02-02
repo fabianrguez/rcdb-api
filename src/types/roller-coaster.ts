@@ -39,4 +39,8 @@ export default interface RollerCoaster {
   stats?: Stats;
   mainPicture: Picture | undefined;
   pictures: Picture[];
+  coords: {
+    lat: string | undefined;
+    lng: string | undefined;
+  };
 }

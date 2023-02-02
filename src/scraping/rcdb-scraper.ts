@@ -103,6 +103,12 @@ export default class RcdbScraper {
       const coasterStats: Stats = this._getCoasterStats($);
       const coasterPhotos: Picture[] = this._getPhotos($);
       const mainPictureId: number = Number($('#demo [aria-label=Picture]').prop('data-id'));
+      const mapLink: string = $('.map-tpl a[href^="https://www.google.com/maps/place"]').attr('href') + '';
+      const splitMapLink: string[] = mapLink.split('/');
+      const placeIndex = splitMapLink.indexOf('place');
+      const coords = splitMapLink[placeIndex + 1];
+
+      console.log({ lat: coords.split(',')[0], lng: coords.split(',')[1] });
 
       this._photosByCoaster = { ...this._photosByCoaster, [getCoasterId(link)]: coasterPhotos };
 
@@ -126,6 +132,10 @@ export default class RcdbScraper {
         stats: coasterStats,
         mainPicture: coasterPhotos.find((photo: Picture) => photo.id === mainPictureId),
         pictures: coasterPhotos,
+        coords: {
+          lat: coords.split(',')[0],
+          lng: coords.split(',')[1],
+        },
       };
     } catch (error: any) {
       console.log(`💥 Error getting coaster ${getCoasterId(link)} info`, error);
