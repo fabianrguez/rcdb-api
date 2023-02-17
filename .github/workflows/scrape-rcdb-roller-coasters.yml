@@ -23,5 +23,6 @@ jobs:
           npm install
           npm run scrape
           git config user.name rcdb-api-bot
+          git config user.email bot@rcdb-api.com
           git diff --quiet && git diff --staged --quiet || git commit -am "[bot] update RCDB Roller Coasters database"
           git push origin main
