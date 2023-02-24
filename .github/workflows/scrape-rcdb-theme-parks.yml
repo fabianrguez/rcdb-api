@@ -1,0 +1,27 @@
+name: Scrape RCDB Theme Parks
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types:
+      - webhook
+
+  # schedule:
+  #   - cron: '0 */1 * * 0'
+  #   - cron: '0 12 * * *'
+env:
+  RCDB_URL: ${{ vars.RCDB_URL }}
+jobs:
+  scrape-coasters:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: |
+          npm install
+          npm run scrape:theme-parks
+          git config user.name rcdb-api-bot
+          git diff --quiet && git diff --staged --quiet || git commit -am "[bot] update RCDB Theme Parks database"
+          git push origin main

@@ -1,9 +1,10 @@
-import type { Picture, RcdbPicture, RollerCoaster, Stats } from '@app/types';
+import type { Picture, RcdbPicture, RollerCoaster, SocialMedia, Stats, ThemePark } from '@app/types';
 import axiosInstance from '@scraping/axios-instance';
 import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { load } from 'cheerio';
 import { Presets, SingleBar } from 'cli-progress';
-import { LOADIPHLPAPI } from 'dns';
+import PaginatedScraper from './paginated-scraper';
+import { getNumberOnly } from '@app/utils';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
 
@@ -19,18 +20,25 @@ const REGION_COASTERS_MAPPER: { [key: string]: string } = {
   World: 'ot=2',
 };
 
-export default class RcdbScraper {
+const SOCIAL_MEDIA_MAPPER: { [key: string]: string } = {
+  27: 'website',
+  24: 'facebook',
+  25: 'twitter',
+  26: 'youtube',
+  29: 'instagram',
+  33: 'pinterest',
+};
+
+export default class RcdbScraper extends PaginatedScraper {
   private static _instance: RcdbScraper;
   private _coastersUrl: string = '/r.htm?';
-  private readonly COASTERS_PER_PAGE: number = 24;
+  private _themParksUrl: string = '/r.htm?ot=3';
   private _coasters: RollerCoaster[] = [];
   private _progressBar: SingleBar = new SingleBar({}, Presets.shades_classic);
   private _photosByCoaster: { [coasterId: number]: Picture[] };
 
-  private constructor() {}
-
-  get photosByCoaster() {
-    return this._photosByCoaster;
+  private constructor() {
+    super();
   }
 
   public static getInstance() {
@@ -39,20 +47,6 @@ export default class RcdbScraper {
     }
 
     return this._instance;
-  }
-
-  private _getPagination(html: any): { totalCoasters: number; totalPages: number } {
-    const $ = load(html);
-
-    const totalCoasters: number =
-      parseInt($('.int').text()) || parseInt($('table.t-list tr:nth-child(2) td:nth-child(2)').text());
-
-    const totalPages = Math.ceil(totalCoasters / this.COASTERS_PER_PAGE);
-
-    return {
-      totalCoasters,
-      totalPages,
-    };
   }
 
   private _getCoasterStats($: CheerioAPI): Stats {
@@ -90,6 +84,18 @@ export default class RcdbScraper {
       copyName: photo.copy_name,
       copyDate: photo.copy_date,
     }));
+  }
+
+  private _getMapCoords($: CheerioAPI): { lat: string; lng: string } {
+    const mapLink: string = $('.map-tpl a[href^="https://www.google.com/maps/place"]').attr('href') + '';
+    const splitMapLink: string[] = mapLink.split('/');
+    const placeIndex = splitMapLink.indexOf('place');
+    const coords = splitMapLink[placeIndex + 1];
+
+    return {
+      lat: coords.split(',')[0],
+      lng: coords.split(',')[1],
+    };
   }
 
   private async _getCoasterDetails(link: string): Promise<RollerCoaster> {
@@ -144,7 +150,7 @@ export default class RcdbScraper {
     }
   }
 
-  private async _getCoastersByPage(page: number): Promise<RollerCoaster[]> {
+  private async _getDataByPage(page: number): Promise<RollerCoaster[]> {
     const pageResponse = await axiosInstance.get(`${this._coastersUrl}&page=${page}`).catch(() => ({ data: {} }));
     const $paginated = load(pageResponse.data);
     const rows = $paginated('.stdtbl.rer tbody tr');
@@ -171,7 +177,7 @@ export default class RcdbScraper {
     this._coastersUrl += REGION_COASTERS_MAPPER[region];
 
     const axiosResponse = await axiosInstance.get(this._coastersUrl);
-    const { totalCoasters, totalPages } = this._getPagination(axiosResponse.data);
+    const { total: totalCoasters, pages: totalPages } = this.getPagination(axiosResponse.data);
     console.log(`Scraping ${region} coasters 🎢`);
 
     console.log(`Coasters: ${totalCoasters} Pages: ${totalPages}\n`);
@@ -179,7 +185,7 @@ export default class RcdbScraper {
     this._progressBar.start(totalCoasters, 0);
 
     for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
-      const coastersByPage: RollerCoaster[] = await this._getCoastersByPage(currentPage);
+      const coastersByPage: RollerCoaster[] = await this._getDataByPage(currentPage);
       this._coasters = [...this._coasters, ...coastersByPage];
     }
 
@@ -191,5 +197,64 @@ export default class RcdbScraper {
     console.log(`Coasters scraped in ${time} minutes`);
 
     return this._coasters;
+  }
+
+  public async scrapeThemeParks(): Promise<ThemePark[]> {
+    console.log(`Scraping theme parks 🎢`);
+    let themeParks: ThemePark[] = [];
+
+    const onParkScrape = ($: CheerioAPI, id: number): ThemePark => {
+      const statusDate: Cheerio<any> = $('#feature time[datetime]');
+      const parkPhotos: Picture[] = this.getPhotos($);
+      const mainPictureId: number = Number($('#demo [aria-label=Picture]').prop('data-id'));
+      const $socialMedia = $('#media_row > a');
+      const mapCoords = this._getMapCoords($);
+
+      const socialMedia: SocialMedia = $socialMedia.toArray()?.reduce(
+        (acc: any, element: Element): SocialMedia => {
+          const mediaUrl: string = element.attribs.href;
+          const mediaTypeNumber: number = getNumberOnly(element.attribs['data-background']);
+          const mediaType: string = SOCIAL_MEDIA_MAPPER[mediaTypeNumber];
+
+          return {
+            ...acc,
+            [mediaType]: mediaUrl,
+          };
+        },
+        {
+          twitter: '',
+          facebook: '',
+          website: '',
+          youtube: '',
+          instagram: '',
+          pinterest: '',
+        }
+      );
+
+      const themePark: ThemePark = {
+        id,
+        name: $('#feature h1').text(),
+        city: $('#feature > div > a:nth-of-type(1)').text(),
+        state: $('#feature > div > a:nth-of-type(2)').text(),
+        country: $('#feature > div > a:nth-of-type(3)').text(),
+        status: {
+          state: statusDate.prev().text(),
+          from: statusDate.prop('datetime'),
+          to: statusDate.next().prop('datetime') ?? '',
+        },
+        mainPicture: parkPhotos.find((photo: Picture) => photo.id === mainPictureId),
+        pictures: parkPhotos,
+        socialMedia: socialMedia,
+        coords: mapCoords,
+      };
+
+      themeParks = [...themeParks, themePark];
+
+      return themePark;
+    };
+
+    await this.scrapePages<ThemePark>(this._themParksUrl, onParkScrape);
+
+    return themeParks;
   }
 }

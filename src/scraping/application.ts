@@ -5,7 +5,7 @@ import type { Regions } from '@scraping/rcdb-scraper';
 import RcdbScraper from '@scraping/rcdb-scraper';
 import StaticFiles from 'db/static-files';
 
-const title = `
+export const title = `
 ╔═══╦═══╦═══╦══╗─╔═══╗
 ║╔═╗║╔═╗╠╗╔╗║╔╗║─║╔═╗║
 ║╚═╝║║─╚╝║║║║╚╝╚╗║╚══╦══╦═╦══╦══╦══╗
