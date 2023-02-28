@@ -1,6 +1,6 @@
 import Application from '@scraping/application';
 import { program } from 'commander';
-import type { Regions } from '@scraping/rcdb-scraper';
+import type { Regions } from '@scraping/rcdb-application';
 
 program.option('--region <regionName>');
 program.option('--saveData <boolean>');

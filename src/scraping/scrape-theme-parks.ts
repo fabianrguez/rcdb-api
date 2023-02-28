@@ -1,4 +1,4 @@
-import RcdbScraper from '@scraping/rcdb-scraper';
+import RcdbScraper from '@scraping/rcdb-application';
 import { title } from './application';
 import type ThemePark from 'types/theme-park';
 import JsonDB from '@app/db';

@@ -1,10 +1,10 @@
-import type { Picture, RcdbPicture, RollerCoaster, SocialMedia, Stats, ThemePark } from '@app/types';
+import type { ParkCoaster, Picture, RcdbPicture, RollerCoaster, SocialMedia, Stats, ThemePark } from '@app/types';
+import { getNumberOnly } from '@app/utils';
 import axiosInstance from '@scraping/axios-instance';
 import type { Cheerio, CheerioAPI, Element } from 'cheerio';
 import { load } from 'cheerio';
 import { Presets, SingleBar } from 'cli-progress';
 import PaginatedScraper from './paginated-scraper';
-import { getNumberOnly } from '@app/utils';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
 
@@ -209,6 +209,29 @@ export default class RcdbScraper extends PaginatedScraper {
       const mainPictureId: number = Number($('#demo [aria-label=Picture]').prop('data-id'));
       const $socialMedia = $('#media_row > a');
       const mapCoords = this._getMapCoords($);
+      const $coasters = $('.stdtbl.ctr');
+
+      const parkCoasters: ParkCoaster[] = $coasters
+        .toArray()
+        .map(($coasterTable: Element) => {
+          const $tableHtml: CheerioAPI = load($coasterTable.children);
+          const $coastersRows = $tableHtml('tbody');
+          const status = $tableHtml('thead th:last-of-type').text().toLowerCase();
+
+          return $coastersRows.toArray().map((item: Element) => {
+            const $row = load(item.children);
+            const $coasterName = $row('td:nth-of-type(2)').children('a');
+            const id: number = getNumberOnly($coasterName.prop('href') + '');
+            const name: string = $coasterName.first().text();
+            const type: string = $row('td:nth-of-type(3)').first().text();
+            const design: string = $row('td:nth-of-type(4)').first().text();
+            const scale: string = $row('td:nth-of-type(5)').first().text();
+            const date: string = $row('td > time').prop('datetime');
+
+            return { id, name, type, design, scale, date, status };
+          });
+        })
+        .flat() as ParkCoaster[];
 
       const socialMedia: SocialMedia = $socialMedia.toArray()?.reduce(
         (acc: any, element: Element): SocialMedia => {
@@ -246,6 +269,7 @@ export default class RcdbScraper extends PaginatedScraper {
         pictures: parkPhotos,
         socialMedia: socialMedia,
         coords: mapCoords,
+        coasters: parkCoasters,
       };
 
       themeParks = [...themeParks, themePark];

@@ -1,8 +1,8 @@
 import { __COASTERS_DB_FILENAME__, __COASTERS_RAW_DB_FILENAME__, __PHOTOS_BY_COASTER_DB_FILENAME__} from '@app/constants';
 import JsonDB from '@app/db';
 import type { Picture, RollerCoaster } from '@app/types';
-import type { Regions } from '@scraping/rcdb-scraper';
-import RcdbScraper from '@scraping/rcdb-scraper';
+import type { Regions } from '@scraping/rcdb-application';
+import RcdbScraper from '@scraping/rcdb-application';
 import StaticFiles from 'db/static-files';
 
 export const title = `

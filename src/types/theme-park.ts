@@ -1,3 +1,4 @@
+import ParkCoaster from './park-coaster';
 import type Picture from './picture';
 
 export declare type SocialMedia = {
@@ -27,4 +28,5 @@ export default interface ThemePark {
     lat: string;
     lng: string;
   };
+  coasters: ParkCoaster[];
 }
