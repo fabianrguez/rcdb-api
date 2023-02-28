@@ -41,8 +41,8 @@ export default class RollerCoasterService {
     const coasters: RollerCoaster[] = await this._getCoastersDB();
 
     return coasters.filter(
-      ({ name, parkName }: RollerCoaster) =>
-        parkName?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
+      ({ name, park }: RollerCoaster) =>
+        park.name?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
         name?.toLowerCase()?.includes(searchTerm?.toLowerCase().toLowerCase())
     );
   }
