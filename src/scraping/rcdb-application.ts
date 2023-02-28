@@ -99,8 +99,6 @@ export default class RcdbScraper extends PaginatedScraper {
   }
 
   private async _getCoasterDetails(link: string): Promise<RollerCoaster> {
-    const getCoasterId = (link: string): number => Number(link?.match(/\d/g)?.join(''));
-
     try {
       const coasterDetailResponse = await axiosInstance.get(link);
       const $: CheerioAPI = load(coasterDetailResponse.data);
@@ -114,12 +112,15 @@ export default class RcdbScraper extends PaginatedScraper {
       const placeIndex = splitMapLink.indexOf('place');
       const coords = splitMapLink[placeIndex + 1];
 
-      this._photosByCoaster = { ...this._photosByCoaster, [getCoasterId(link)]: coasterPhotos };
+      this._photosByCoaster = { ...this._photosByCoaster, [getNumberOnly(link)]: coasterPhotos };
 
       return {
-        id: getCoasterId(link),
+        id: getNumberOnly(link),
         name: $('#feature h1').text(),
-        parkName: $('#feature > div > a:nth-of-type(1)').text(),
+        park: {
+          name: $('#feature > div > a:nth-of-type(1)').text(),
+          id: getNumberOnly($('#feature > div > a:nth-of-type(1)').prop('href') + ''),
+        },
         city: $('#feature > div > a:nth-of-type(2)').text(),
         state: $('#feature > div > a:nth-of-type(3)').text(),
         country: $('#feature > div > a:nth-of-type(4)').text(),
@@ -142,10 +143,10 @@ export default class RcdbScraper extends PaginatedScraper {
         },
       };
     } catch (error: any) {
-      console.log(`💥 Error getting coaster ${getCoasterId(link)} info`, error);
+      console.log(`💥 Error getting coaster ${getNumberOnly(link)} info`, error);
 
       return {
-        id: getCoasterId(link),
+        id: getNumberOnly(link),
       } as RollerCoaster;
     }
   }
@@ -163,6 +164,7 @@ export default class RcdbScraper extends PaginatedScraper {
       if (link) {
         this._progressBar.increment();
         const rollerCoaster: RollerCoaster = await this._getCoasterDetails(link);
+        console.log(rollerCoaster);
 
         coastersPage = [...coastersPage, rollerCoaster];
       }

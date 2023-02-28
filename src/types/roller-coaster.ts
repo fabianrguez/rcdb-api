@@ -22,7 +22,10 @@ export interface Stats {
 export default interface RollerCoaster {
   id: number;
   name: string;
-  parkName: string;
+  park: {
+    id: number;
+    name: string;
+  };
   city: string;
   state: string;
   region: string;
