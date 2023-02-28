@@ -164,7 +164,6 @@ export default class RcdbScraper extends PaginatedScraper {
       if (link) {
         this._progressBar.increment();
         const rollerCoaster: RollerCoaster = await this._getCoasterDetails(link);
-        console.log(rollerCoaster);
 
         coastersPage = [...coastersPage, rollerCoaster];
       }
