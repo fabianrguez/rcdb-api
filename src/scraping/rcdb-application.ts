@@ -216,11 +216,12 @@ export default class RcdbScraper extends PaginatedScraper {
         .toArray()
         .map(($coasterTable: Element) => {
           const $tableHtml: CheerioAPI = load($coasterTable.children);
-          const $coastersRows = $tableHtml('tbody');
+          const $coastersRows = $tableHtml('tbody tr');
           const status = $tableHtml('thead th:last-of-type').text().toLowerCase();
 
           return $coastersRows.toArray().map((item: Element) => {
             const $row = load(item.children);
+
             const $coasterName = $row('td:nth-of-type(2)').children('a');
             const id: number = getNumberOnly($coasterName.prop('href') + '');
             const name: string = $coasterName.first().text();
