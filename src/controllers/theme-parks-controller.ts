@@ -1,7 +1,7 @@
 import { ThemeParkService } from '@app/services';
 import { Controller, Get, Inject } from '@lib/decorators';
 import type { Request, Response } from 'express';
-import ThemePark from 'types/theme-park';
+import { ThemePark } from '@app/types';
 
 @Controller('/api/theme-parks')
 export default class ThemeParksController {

@@ -16,7 +16,7 @@
       "@app/utils": ["utils"],
       "@app/utils/*": ["utils/*"],
       "@app/constants": ["constants"],
-      "@app/db": ["db"],
+      "@app/db": ["../db"],
       "@app/types": ["types"],
       "@scraping": ["scraping"],
       "@scraping/*": ["scraping/*"],

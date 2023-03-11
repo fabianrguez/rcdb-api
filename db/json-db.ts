@@ -4,7 +4,7 @@ import path from 'path';
 
 export default class JsonDB {
   private static _instance: JsonDB;
-  private readonly __DB_PATH__: string = path.join(process.cwd(), './src/db');
+  private readonly __DB_PATH__: string = path.join(process.cwd(), './db');
 
   private constructor() {}
 

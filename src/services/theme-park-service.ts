@@ -1,5 +1,5 @@
 import { Service } from '@lib/decorators';
-import JsonDB from 'db/json-db';
+import JsonDB from '@app/db';
 import type { ThemePark } from '@app/types';
 import { __THEME_PARKS_DB_FILENAME__ } from 'constants/database';
 import { PaginatedResponse } from '@app/models';
