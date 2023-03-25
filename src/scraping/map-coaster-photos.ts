@@ -1,6 +1,6 @@
 import { Picture, RollerCoaster } from '@app/types';
-import { __COASTERS_DB_FILENAME__, __COASTERS_RAW_DB_FILENAME__ } from 'constants/database';
-import JsonDB from 'db/json-db';
+import { __COASTERS_DB_FILENAME__, __COASTERS_RAW_DB_FILENAME__ } from '@app/constants';
+import JsonDB from '@app/db';
 import config from '@config';
 
 function mapCoasterImagesToStaticPath(coasters: RollerCoaster[]): RollerCoaster[] {
