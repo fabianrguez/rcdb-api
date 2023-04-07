@@ -7,6 +7,7 @@
     "baseUrl": "./src",
     "paths": {
       "@lib/*": ["lib/*"],
+      "@lib/core": ["lib/core"],
       "@app/controllers": ["controllers"],
       "@app/controllers/*": ["controllers/*"],
       "@app/services": ["services"],
