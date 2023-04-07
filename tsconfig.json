@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.json"],
+  "include": ["src/**/*.ts", "**/*.json"],
   "compilerOptions": {
     "outDir": "dist",
     "target": "es2022",
@@ -7,7 +7,6 @@
     "baseUrl": "./src",
     "paths": {
       "@lib/*": ["lib/*"],
-      "@lib/core": ["lib/core"],
       "@app/controllers": ["controllers"],
       "@app/controllers/*": ["controllers/*"],
       "@app/services": ["services"],
