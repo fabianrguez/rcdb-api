@@ -33,7 +33,7 @@ const SOCIAL_MEDIA_MAPPER: { [key: string]: string } = {
 
 export default class RcdbScraper extends PaginatedScraper {
   private static _instance: RcdbScraper;
-  private _coastersUrl: string = '/r.htm';
+  private _coastersUrl: string = '/r.htm?';
   private _themParksUrl: string = '/r.htm?ot=3';
   private _coasters: RollerCoaster[] = [];
   private _progressBar: SingleBar = new SingleBar({}, Presets.shades_classic);
@@ -184,8 +184,7 @@ export default class RcdbScraper extends PaginatedScraper {
   public async scrapeCoasters({region}: { region: Regions }) {
     const start = performance.now();
 
-    // this._coastersUrl += REGION_COASTERS_MAPPER[region];
-    this._coastersUrl += "?nc=cortina+bob&ot=2";
+    this._coastersUrl += REGION_COASTERS_MAPPER[region];
 
     const axiosResponse = await axiosInstance.get(this._coastersUrl);
     const {total: totalCoasters, pages: totalPages} = this.getPagination(axiosResponse.data);
