@@ -31,7 +31,10 @@ export default interface RollerCoaster {
   region: string;
   status: {
     state: string;
-    date: string;
+    date: {
+      opened: string;
+      closed?: string;
+    };
   };
   country: string;
   link: string;
