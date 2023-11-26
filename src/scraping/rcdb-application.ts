@@ -1,9 +1,9 @@
-import type { ParkCoaster, Picture, RcdbPicture, RollerCoaster, SocialMedia, Stats, ThemePark } from '@app/types';
-import { getNumberOnly } from '@app/utils';
+import type {ParkCoaster, Picture, RcdbPicture, RollerCoaster, SocialMedia, Stats, ThemePark} from '@app/types';
+import {getNumberOnly} from '@app/utils';
 import axiosInstance from '@scraping/axios-instance';
-import type { Cheerio, CheerioAPI, Element } from 'cheerio';
-import { load } from 'cheerio';
-import { Presets, SingleBar } from 'cli-progress';
+import type {Cheerio, CheerioAPI, Element} from 'cheerio';
+import {load} from 'cheerio';
+import {Presets, SingleBar} from 'cli-progress';
 import PaginatedScraper from './paginated-scraper';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
@@ -31,7 +31,7 @@ const SOCIAL_MEDIA_MAPPER: { [key: string]: string } = {
 
 export default class RcdbScraper extends PaginatedScraper {
   private static _instance: RcdbScraper;
-  private _coastersUrl: string = '/r.htm?';
+  private _coastersUrl: string = '/r.htm';
   private _themParksUrl: string = '/r.htm?ot=3';
   private _coasters: RollerCoaster[] = [];
   private _progressBar: SingleBar = new SingleBar({}, Presets.shades_classic);
@@ -50,19 +50,17 @@ export default class RcdbScraper extends PaginatedScraper {
   }
 
   private _getCoasterStats($: CheerioAPI): Stats {
-    return $('table.stat-tbl tr')
+    return <Stats>$('table.stat-tbl tr')
       .map((_: number, element: Element) => {
         const dataValue: Cheerio<Element> = $(element).find('td');
 
         const getValue = (value: Cheerio<Element>) => {
-          if (value.children().length > 1) {
-            return value
-              .children()
-              .map((_: number, element: Element) => element.children.map((child: any) => child.data))
-              .get();
-          } else {
-            return value.text();
-          }
+          const values = value.map((i, td) =>
+            ($(td).contents().first().text())
+          ).toArray().map((element) => element.toString())
+
+
+          return values.length > 1 ? values : values[0]
         };
 
         return {
@@ -71,7 +69,7 @@ export default class RcdbScraper extends PaginatedScraper {
         };
       })
       .get()
-      .reduce((obj: { [key: string]: any }, item: { [key: string]: any }) => ({ ...obj, [item.key]: item.value }), {});
+      .reduce((obj: { [key: string]: any }, item: { [key: string]: any }) => ({...obj, [item.key]: item.value}), {});
   }
 
   private _getPhotos($: CheerioAPI): Picture[] {
@@ -112,7 +110,7 @@ export default class RcdbScraper extends PaginatedScraper {
       const placeIndex = splitMapLink.indexOf('place');
       const coords = splitMapLink[placeIndex + 1];
 
-      this._photosByCoaster = { ...this._photosByCoaster, [getNumberOnly(link)]: coasterPhotos };
+      this._photosByCoaster = {...this._photosByCoaster, [getNumberOnly(link)]: coasterPhotos};
 
       return {
         id: getNumberOnly(link),
@@ -152,7 +150,7 @@ export default class RcdbScraper extends PaginatedScraper {
   }
 
   private async _getDataByPage(page: number): Promise<RollerCoaster[]> {
-    const pageResponse = await axiosInstance.get(`${this._coastersUrl}&page=${page}`).catch(() => ({ data: {} }));
+    const pageResponse = await axiosInstance.get(`${this._coastersUrl}&page=${page}`).catch(() => ({data: {}}));
     const $paginated = load(pageResponse.data);
     const rows = $paginated('.stdtbl.rer tbody tr');
     let coastersPage: RollerCoaster[] = [];
@@ -172,13 +170,13 @@ export default class RcdbScraper extends PaginatedScraper {
     return coastersPage;
   }
 
-  public async scrapeCoasters({ region }: { region: Regions }) {
+  public async scrapeCoasters({region}: { region: Regions }) {
     const start = performance.now();
 
     this._coastersUrl += REGION_COASTERS_MAPPER[region];
 
     const axiosResponse = await axiosInstance.get(this._coastersUrl);
-    const { total: totalCoasters, pages: totalPages } = this.getPagination(axiosResponse.data);
+    const {total: totalCoasters, pages: totalPages} = this.getPagination(axiosResponse.data);
     console.log(`Scraping ${region} coasters 🎢`);
 
     console.log(`Coasters: ${totalCoasters} Pages: ${totalPages}\n`);
@@ -230,7 +228,7 @@ export default class RcdbScraper extends PaginatedScraper {
             const scale: string = $row('td:nth-of-type(5)').first().text();
             const date: string = $row('td > time').prop('datetime');
 
-            return { id, name, type, design, scale, date, status };
+            return {id, name, type, design, scale, date, status};
           });
         })
         .flat() as ParkCoaster[];
