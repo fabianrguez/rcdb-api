@@ -8,6 +8,8 @@ import PaginatedScraper from './paginated-scraper';
 
 export type Regions = 'Madrid' | 'Europe' | 'Spain' | 'World';
 
+const DATE_TYPE_BY_INDEX = ["opened", "closed"]
+
 const camelize = (str: string) =>
   str
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase()))
@@ -110,6 +112,15 @@ export default class RcdbScraper extends PaginatedScraper {
       const placeIndex = splitMapLink.indexOf('place');
       const coords = splitMapLink[placeIndex + 1];
 
+      const operationDates = stateDate
+        .map((_, el) => $(el).prop("datetime"))
+        .toArray()
+        .reduce((acc, element, currentIndex) => ({
+            ...acc, [DATE_TYPE_BY_INDEX[currentIndex]]: element
+          }),
+          { opened: ""}
+        );
+
       this._photosByCoaster = {...this._photosByCoaster, [getNumberOnly(link)]: coasterPhotos};
 
       return {
@@ -126,7 +137,7 @@ export default class RcdbScraper extends PaginatedScraper {
         link: link,
         status: {
           state: stateDate.prev().text(),
-          date: stateDate.prop('datetime'),
+          date: operationDates
         },
         make: $('#feature .scroll:nth-of-type(2) a:nth-of-type(1)').text(),
         model: $('#feature .scroll:nth-of-type(2) a:nth-of-type(2)').text(),
@@ -173,7 +184,8 @@ export default class RcdbScraper extends PaginatedScraper {
   public async scrapeCoasters({region}: { region: Regions }) {
     const start = performance.now();
 
-    this._coastersUrl += REGION_COASTERS_MAPPER[region];
+    // this._coastersUrl += REGION_COASTERS_MAPPER[region];
+    this._coastersUrl += "?nc=cortina+bob&ot=2";
 
     const axiosResponse = await axiosInstance.get(this._coastersUrl);
     const {total: totalCoasters, pages: totalPages} = this.getPagination(axiosResponse.data);
